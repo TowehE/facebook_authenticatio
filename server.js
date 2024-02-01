@@ -29,8 +29,7 @@ app.use(session({
     clientID:    process.env.AppID,
     clientSecret: process.env.appSecret,
     callbackURL: process.env.callbackURL,
-   // passReqToCallback   : true
-   profileFields: ['id', 'displayName', 'photos','email'],
+    profileFields: ['id', 'displayName', 'photos','email'],
   },
   async(request, accessToken, refreshToken, profile, done)=> {
     try {
@@ -50,21 +49,14 @@ app.use(session({
           
       return done(null, user)
       }
-
-  
       else{
-        return done(null,profile)
-      }
-    
-      
+        return done(null,user)
+      }      
     } catch (error) {
       return done(error, false);
     }
   }
 ));
-
-    
-
 
 passport.serializeUser((user,done)=>{
   return done(null, user)
@@ -73,17 +65,6 @@ passport.serializeUser((user,done)=>{
 passport.deserializeUser((user,done)=>{
   return done(null, user)
 })
-// passport.deserializeUser(async (user, done) => {
-//   try {
-//     const user = await userModel.findById(id);
-//     done(null, user);
-//   } catch (error) {
-//     done(error, false);
-//   }
-// })
-
-
-
 
 app.use("/", userRouter)
 
